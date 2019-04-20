@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 
-my @queue;
 my $header = undef;
 my ($hRecord, $table);
 my $ofh = undef;
