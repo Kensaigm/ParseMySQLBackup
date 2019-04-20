@@ -16,17 +16,12 @@ open (my $fh, '<:encoding(UTF-8)', $filename)
     or die "Could not open file '$filename' $!";
 
 while (my $line = <$fh>){
-   my $last_line = queue($line);
-
    if ($line =~ m/^--\sTable\sstructure\sfor\stable\s/){
      $header = $hRecord unless (defined $header);
-     # print ("$line");
      (undef, $table) = split(/`/, $line);
      print ($table . "\r\n");
 
      new_table($table);
-     # print {$ofh} $last_line;
-     # print {$ofh} $line;
    }
 
    if (!defined $header){
@@ -44,13 +39,4 @@ sub new_table {
     open ($ofh, '>:encoding(UTF-8)', "$filename.sql")
       or die "Could not create new file '$filename.sql' $!";
     print {$ofh} $header;
-}
-
-sub queue {
-    my $new = shift;
-    while (scalar(@queue) >= 5) {
-        shift (@queue);
-    }
-    push @queue, $new;
-    return $queue[(scalar(@queue)-2)];
 }
